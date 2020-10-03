@@ -10,7 +10,7 @@ import {ListComponent} from './list/list.component';
 import {FormComponent} from './form/form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {TodoStateModel} from './states/todo.state';
+import {TodoState, TodoStateModel} from './states/todo.state';
 import {environment} from '../environments/environment';
 
 @NgModule({
@@ -23,7 +23,7 @@ import {environment} from '../environments/environment';
     BrowserModule,
     AppRoutingModule,
     NgxsModule.forRoot([
-      TodoStateModel
+      TodoState
     ], {developmentMode: !environment.production}),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Todo} from './model/todo.model';
 import {HttpClient} from '@angular/common/http';
+import {map, take} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class TodoService {
   }
 
   fetchTodos() {
-    return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos');
+    return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos').pipe(map(res => res.slice(0, 10)));
   }
 
   deleteTodo(id: number) {

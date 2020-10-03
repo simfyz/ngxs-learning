@@ -6,14 +6,14 @@ import {Todo} from '../model/todo.model';
 import {Injectable} from '@angular/core';
 
 export class TodoStateModel {
-  todos: Todo[];
+  todoList: Todo[];
   selectedTodo: Todo;
 }
 
 @State<TodoStateModel>({
   name: 'todos',
   defaults: {
-    todos: [],
+    todoList: [],
     selectedTodo: null
   }
 })
@@ -26,7 +26,7 @@ export class TodoState {
 
   @Selector()
   static getTodoList(state: TodoStateModel) {
-    return state.todos;
+    return state.todoList;
   }
 
   @Selector()
@@ -40,7 +40,7 @@ export class TodoState {
       const state = getState();
       setState({
         ...state,
-        todos: result,
+        todoList: result,
       });
     }));
   }
@@ -50,7 +50,7 @@ export class TodoState {
     return this.todoService.addTodo(payload).pipe(tap((result) => {
       const state = getState();
       patchState({
-        todos: [...state.todos, result]
+        todoList: [...state.todoList, result]
       });
     }));
   }
@@ -59,12 +59,12 @@ export class TodoState {
   updateTodo({getState, setState}: StateContext<TodoStateModel>, {payload, id}: UpdateTodo) {
     return this.todoService.updateTodo(payload, id).pipe(tap((result) => {
       const state = getState();
-      const todoList = [...state.todos];
+      const todoList = [...state.todoList];
       const todoIndex = todoList.findIndex(item => item.id === id);
       todoList[todoIndex] = result;
       setState({
         ...state,
-        todos: todoList,
+        todoList: todoList,
       });
     }));
   }
@@ -74,10 +74,10 @@ export class TodoState {
   deleteTodo({getState, setState}: StateContext<TodoStateModel>, {id}: DeleteTodo) {
     return this.todoService.deleteTodo(id).pipe(tap(() => {
       const state = getState();
-      const filteredArray = state.todos.filter(item => item.id !== id);
+      const filteredArray = state.todoList.filter(item => item.id !== id);
       setState({
         ...state,
-        todos: filteredArray,
+        todoList: filteredArray,
       });
     }));
   }
