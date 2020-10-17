@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
-import {DeleteTodo, GetTodos, SetSelectedTodo} from '../actions/todo.action';
 import {TodoState} from '../states/todo.state';
 import {Observable} from 'rxjs';
 import {Todo} from '../model/todo.model';
+import {TodoActions} from '../actions/todo.action';
 
 @Component({
   selector: 'app-list',
@@ -17,16 +17,16 @@ export class ListComponent implements OnInit {
   constructor(private store: Store) {
   }
 
-  ngOnInit() {
-    this.store.dispatch(new GetTodos());
+  ngOnInit(): void {
+    this.store.dispatch(new TodoActions.Get());
   }
 
-  deleteTodo(id: number) {
-    this.store.dispatch(new DeleteTodo(id));
+  deleteTodo(id: number): void {
+    this.store.dispatch(new TodoActions.Delete(id));
   }
 
-  editTodo(payload: Todo) {
-    this.store.dispatch(new SetSelectedTodo(payload));
+  editTodo(payload: Todo): void {
+    this.store.dispatch(new TodoActions.SetSelected(payload));
   }
 
 

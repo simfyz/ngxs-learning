@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Todo} from '../model/todo.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AddTodo, SetSelectedTodo, UpdateTodo} from '../actions/todo.action';
+import {TodoActions} from '../actions/todo.action';
 import {Select, Store} from '@ngxs/store';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
@@ -23,7 +23,7 @@ export class FormComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.formSubscription.add(
       this.selectedTodo.subscribe(todo => {
         if (todo) {
@@ -40,7 +40,7 @@ export class FormComponent implements OnInit {
     );
   }
 
-  createForm() {
+  createForm(): void {
     this.todoForm = this.fb.group({
       id: [''],
       userId: ['', Validators.required],
@@ -48,24 +48,24 @@ export class FormComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.editTodo) {
       this.formSubscription.add(
-        this.store.dispatch(new UpdateTodo(this.todoForm.value, this.todoForm.value.id)).subscribe(() => {
+        this.store.dispatch(new TodoActions.Update(this.todoForm.value, this.todoForm.value.id)).subscribe(() => {
           this.clearForm();
         })
       );
     } else {
       this.formSubscription.add(
-        this.formSubscription = this.store.dispatch(new AddTodo(this.todoForm.value)).subscribe(() => {
+        this.formSubscription = this.store.dispatch(new TodoActions.Add(this.todoForm.value)).subscribe(() => {
           this.clearForm();
         })
       );
     }
   }
 
-  clearForm() {
+  clearForm(): void {
     this.todoForm.reset();
-    this.store.dispatch(new SetSelectedTodo(null));
+    this.store.dispatch(new TodoActions.SetSelected(null));
   }
 }
